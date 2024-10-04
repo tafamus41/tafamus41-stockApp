@@ -12,8 +12,7 @@ import { Formik, Form } from "formik";
 import { Password, RoundaboutRightRounded } from "@mui/icons-material";
 
 const Login = () => {
-
-  const loginSchema={}
+  const loginSchema = {};
 
   return (
     <Container maxWidth="lg">
@@ -52,41 +51,41 @@ const Login = () => {
             Login
           </Typography>
           <Formik
-          initialValues={{email:"",password:""}}
-          validationSchema={loginSchema}
-          onSubmit={(values,actions)=>{
-            //POST
-            //Formu Temizleme
-            //Mesaj(toast)
-            //Routing 
-            //Global State güncelleme
-        console.log(values);    
-          }}
+            initialValues={{ email: "", password: "" }}
+            validationSchema={loginSchema}
+            onSubmit={(values, actions) => {
+              //POST
+              //Formu Temizleme
+              //Mesaj(toast)
+              //Routing
+              //Global State güncelleme
+              console.log(values);
+            }}
           >
-
+            {() => (
+              <Form>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <TextField
+                    label="Email"
+                    name="email"
+                    id="email"
+                    type="email"
+                    variant="outlined"
+                  />
+                  <TextField
+                    label="password"
+                    name="password"
+                    id="password"
+                    type="password"
+                    variant="outlined"
+                  />
+                  <Button variant="contained" type="submit">
+                    Submit
+                  </Button>
+                </Box>
+              </Form>
+            )}
           </Formik>
-          <Box
-            component="form"
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-          >
-            <TextField
-              label="Email"
-              name="email"
-              id="email"
-              type="email"
-              variant="outlined"
-            />
-            <TextField
-              label="password"
-              name="password"
-              id="password"
-              type="password"
-              variant="outlined"
-            />
-            <Button variant="contained" type="submit">
-              Submit
-            </Button>
-          </Box>
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
             <Link to="/register">Do you have not an account?</Link>
