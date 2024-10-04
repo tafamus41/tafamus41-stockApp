@@ -52,7 +52,7 @@ const Login = () => {
           </Typography>
           <Formik
             initialValues={{ email: "", password: "" }}
-            validationSchema={loginSchema}
+            // validationSchema={loginSchema}
             onSubmit={(values, actions) => {
               //POST
               //Formu Temizleme
@@ -60,6 +60,7 @@ const Login = () => {
               //Routing
               //Global State güncelleme
               console.log(values);
+              actions.resetForm()
             }}
           >
             {() => (
