@@ -1,18 +1,37 @@
-import Avatar from "@mui/material/Avatar";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import LockIcon from "@mui/icons-material/Lock";
-import image from "../assets/result.svg";
-import { Link } from "react-router-dom";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
-import { Formik, Form } from "formik";
-import { Password, RoundaboutRightRounded } from "@mui/icons-material";
+import Avatar from "@mui/material/Avatar"
+import Container from "@mui/material/Container"
+import Grid from "@mui/material/Grid"
+import Typography from "@mui/material/Typography"
+import LockIcon from "@mui/icons-material/Lock"
+import image from "../assets/result.svg"
+import { Link } from "react-router-dom"
+import Box from "@mui/material/Box"
+import TextField from "@mui/material/TextField"
+import { Button } from "@mui/material"
+import { Formik, Form } from "formik"
+import { object, string } from "yup"
+// import { login } from "../services/useApiRequests"
+import useApiRequests from "../services/useApiRequests"
 
 const Login = () => {
-  const loginSchema = {};
+  const { login } = useApiRequests()
+
+  const loginSchema = object({
+    password: string()
+      .required("Şifre zorunludur")
+      .min(8, "Şifre en az 8 karekter içermelidir")
+      .max(16, "Şifre en fazla 16 karekter içermelidir")
+      .matches(/[a-z]+/, "Şifre en az bir küçük harf içermelidir")
+      .matches(/[A-Z]+/, "Şifre en az bir büyük harf içermelidir")
+      .matches(
+        /[@$!%*?&]+/,
+        "Şifre en az bir özel karakter (@$!%*?&) içermelidir"
+      ),
+
+    email: string()
+      .email("Lütfen geçerli email giriniz")
+      .required("Email zorunludur"),
+  })
 
   return (
     <Container maxWidth="lg">
@@ -50,20 +69,29 @@ const Login = () => {
           >
             Login
           </Typography>
+
           <Formik
             initialValues={{ email: "", password: "" }}
-            // validationSchema={loginSchema}
+            validationSchema={loginSchema}
             onSubmit={(values, actions) => {
-              //POST
-              //Formu Temizleme
-              //Mesaj(toast)
-              //Routing
-              //Global State güncelleme
-              console.log(values);
+              //? POST (login)
+              login(values)
+              //? Formu temizleme
+              //? Mesaj (Toast)
+              //? Routing (stock)
+              //? Global state güncellemesi
               actions.resetForm()
+              actions.setSubmitting(false) //? isSubmitting (Boolean)
             }}
           >
-            {() => (
+            {({
+              isSubmitting,
+              handleChange,
+              handleBlur,
+              values,
+              touched,
+              errors,
+            }) => (
               <Form>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   <TextField
@@ -72,6 +100,11 @@ const Login = () => {
                     id="email"
                     type="email"
                     variant="outlined"
+                    onChange={handleChange}
+                    value={values.email}
+                    error={touched.email && Boolean(errors.email)}
+                    onBlur={handleBlur}
+                    helperText={errors.email}
                   />
                   <TextField
                     label="password"
@@ -79,8 +112,17 @@ const Login = () => {
                     id="password"
                     type="password"
                     variant="outlined"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                    error={touched.password && Boolean(errors.password)}
+                    helperText={errors.password}
                   />
-                  <Button variant="contained" type="submit">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
                     Submit
                   </Button>
                 </Box>
@@ -100,7 +142,7 @@ const Login = () => {
         </Grid>
       </Grid>
     </Container>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
