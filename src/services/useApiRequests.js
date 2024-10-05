@@ -1,6 +1,14 @@
 import axios from "axios";
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify"
-export const login = async (userData) => {
+import { useNavigate } from "react-router-dom"
+
+
+import React from 'react'
+
+const useApiRequests = () => {
+  const navigate = useNavigate()
+  const login = async (userData) => {
+    
   const BASE_URL = "https://14104.fullstack.clarusway.com/"
 //   const {data} = await axios.post(`${BASE_URL}/auth/login`, userData)
   try {
@@ -10,7 +18,7 @@ export const login = async (userData) => {
     )
     toastSuccessNotify("Login işlemi başarılı")
     // dispatch(loginSuccess(data))
-    // navigate("stock")
+    navigate("stock")
     console.log(data)
   } catch (error) {
     toastErrorNotify("Login işlemi başarısız")
@@ -18,4 +26,14 @@ export const login = async (userData) => {
     console.log(error)
   }
 }
+
+  return (
+    <div>useApiRequests</div>
+  )
+}
+
+export default useApiRequests
+
+
+
 
