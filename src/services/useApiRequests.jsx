@@ -18,8 +18,6 @@ const useApiRequests = () => {
   const dispatch = useDispatch()
   const { token } = useSelector((state) => state.auth)
   const login = async (userData) => {
-    // const BASE_URL = "https://10001.fullstack.clarusway.com"
-
     dispatch(fetchStart())
     try {
       const { data } = await axios.post(
