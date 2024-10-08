@@ -13,6 +13,8 @@ import {
 //? Custom hook
 //? Custom hook uygulamanın tüm her yerinde kullanılmak istenen fonksiyonlarını varsa ve
 //? bu yfonksiyonlar işçerisnide Hook çağırmak istyioirsanız Custom Hook yazmak gereklidir.
+const BASE_URL= process.env.REACT_APP_BASE_URL
+console.log(BASE_URL);
 const useApiRequests = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -27,7 +29,7 @@ const useApiRequests = () => {
       toastSuccessNotify("Login işlemi başarılı")
       dispatch(loginSuccess(data))
       navigate("stock")
-      console.log(data)
+      console.log(process.env.REACT_APP_BASE_URL)
     } catch (error) {
       toastErrorNotify("Login işlemi başarısız")
       dispatch(fetchFail())
