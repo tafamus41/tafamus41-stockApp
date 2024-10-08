@@ -13,12 +13,13 @@ import {
 //? Custom hook
 //? Custom hook uygulamanın tüm her yerinde kullanılmak istenen fonksiyonlarını varsa ve
 //? bu yfonksiyonlar işçerisnide Hook çağırmak istyioirsanız Custom Hook yazmak gereklidir.
-
 const useApiRequests = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { token } = useSelector((state) => state.auth)
   const login = async (userData) => {
+    // const BASE_URL = "https://10001.fullstack.clarusway.com"
+
     dispatch(fetchStart())
     try {
       const { data } = await axios.post(
@@ -28,7 +29,7 @@ const useApiRequests = () => {
       toastSuccessNotify("Login işlemi başarılı")
       dispatch(loginSuccess(data))
       navigate("stock")
-      // console.log(process.env.REACT_APP_BASE_URL)
+      console.log(data)
     } catch (error) {
       toastErrorNotify("Login işlemi başarısız")
       dispatch(fetchFail())

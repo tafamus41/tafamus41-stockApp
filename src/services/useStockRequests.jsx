@@ -1,5 +1,6 @@
 // import axios from "axios"
-import { useDispatch} from "react-redux"
+import { useDispatch } from "react-redux"
+import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify"
 import {
   fetchFail,
   fetchStart,
@@ -66,6 +67,7 @@ const useStockRequests = () => {
       const { data } = await axiosToken.get(path)
       dispatch(getStockSuccess({ data: data.data, path }))
     } catch (error) {
+      toastErrorNotify(`${path} çekme başarısız oldu.`)
       dispatch(fetchFail())
       console.log(error)
     }
@@ -76,13 +78,40 @@ const useStockRequests = () => {
     try {
       await axiosToken.delete(`${path}/${id}`)
       getStock(path)
+      toastSuccessNotify(`Silme işlemi başarılı.`)
     } catch (error) {
+      dispatch(fetchFail())
+      toastErrorNotify("Silme işlemi başarısız oldu.")
+    }
+  }
+
+  const postStock = async (path, data) => {
+    dispatch(fetchStart())
+    try {
+      await axiosToken.post(path, data)
+      toastSuccessNotify(`Veri ekleme başarılı.`)
+      getStock(path)
+    } catch (error) {
+      toastErrorNotify("Ekleme işlemi başarısız oldu.")
       dispatch(fetchFail())
     }
   }
 
+  const putStock = async (path, data) => {
+    dispatch(fetchStart())
+    try {
+      await axiosToken.put(`/${path}/${data._id}`, data)
+      toastSuccessNotify(`Güncelleme başarılı.`)
+      getStock(path)
+    } catch (error) {
+      dispatch(fetchFail())
+      toastErrorNotify("Güncelleme başarısız oldu.")
+      console.log(error)
+    }
+  }
+
   //   return { getFirms, getSales }
-  return { getStock, deleteStock }
+  return { getStock, deleteStock, postStock, putStock }
 }
 
 export default useStockRequests
