@@ -1,82 +1,45 @@
 import { AreaChart } from "@tremor/react"
-
-const chartdata = [
-  {
-    date: "Jan 22",
-    SolarPanels: 2890,
-    Inverters: 2338,
-  },
-  {
-    date: "Feb 22",
-    SolarPanels: 2756,
-    Inverters: 2103,
-  },
-  {
-    date: "Mar 22",
-    SolarPanels: 3322,
-    Inverters: 2194,
-  },
-  {
-    date: "Apr 22",
-    SolarPanels: 3470,
-    Inverters: 2108,
-  },
-  {
-    date: "May 22",
-    SolarPanels: 3475,
-    Inverters: 1812,
-  },
-  {
-    date: "Jun 22",
-    SolarPanels: 3129,
-    Inverters: 1726,
-  },
-  {
-    date: "Jul 22",
-    SolarPanels: 3490,
-    Inverters: 1982,
-  },
-  {
-    date: "Aug 22",
-    SolarPanels: 2903,
-    Inverters: 2012,
-  },
-  {
-    date: "Sep 22",
-    SolarPanels: 2643,
-    Inverters: 2342,
-  },
-  {
-    date: "Oct 22",
-    SolarPanels: 2837,
-    Inverters: 2473,
-  },
-  {
-    date: "Nov 22",
-    SolarPanels: 2954,
-    Inverters: 3848,
-  },
-  {
-    date: "Dec 22",
-    SolarPanels: 3239,
-    Inverters: 3736,
-  },
-]
+import { useSelector } from "react-redux"
 
 const dataFormatter = (number) =>
-  `$${Intl.NumberFormat("us").format(number).toString()}`
+  `$${Intl.NumberFormat("tr").format(number).toString()}`
 
 const Charts = () => {
+  const { sales, purchases } = useSelector((state) => state.stock)
+
+  console.log(sales)
+
+  const salesData = sales.map((sale) => ({
+    salesAmount: sale.amount,
+    date: new Date(sale.createdAt).toLocaleDateString("tr-TR"),
+  }))
+
+  const purchasesData = purchases.map((pur) => ({
+    purAmount: pur.amount,
+    date: new Date(pur.createdAt).toLocaleDateString("tr-TR"),
+  }))
+
   return (
-    <AreaChart
-      className="h-80"
-      data={chartdata}
-      index="date"
-      categories={["SolarPanels", "Inverters"]}
-      colors={["indigo", "rose"]}
-      valueFormatter={dataFormatter}
-      yAxisWidth={60}
-    />
+    <>
+      <AreaChart
+        className="h-80"
+        data={salesData}
+        index="date"
+        categories={["salesAmount"]}
+        colors={["indigo"]}
+        valueFormatter={dataFormatter}
+        yAxisWidth={80}
+      />
+      <AreaChart
+        className="h-80"
+        data={purchasesData}
+        index="date"
+        categories={["purAmount"]}
+        colors={["red"]}
+        valueFormatter={dataFormatter}
+        yAxisWidth={80}
+      />
+    </>
   )
 }
 export default Charts
