@@ -7,7 +7,7 @@ import { TableSkelthon, NoDataMessage } from "../components/Messages"
 import { useSelector } from "react-redux"
 
 const Sales = () => {
-  const { getStock, getProSaleBrand } = useStockRequests()
+  const {getProSaleBrand } = useStockRequests()
   const { sales, loading } = useSelector((state) => state.stock)
 
   const [open, setOpen] = useState(false)
