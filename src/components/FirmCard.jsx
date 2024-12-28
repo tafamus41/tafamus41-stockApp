@@ -11,6 +11,7 @@ import useStockRequests from "../services/useStockRequests"
 
 export default function FirmCard({ firm, handleOpen, setData }) {
   const { deleteStock } = useStockRequests()
+  console.log(firm)
   return (
     <Card
       sx={{

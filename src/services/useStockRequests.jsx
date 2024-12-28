@@ -66,6 +66,7 @@ const useStockRequests = () => {
     dispatch(fetchStart())
     try {
       const { data } = await axiosToken.get(path)
+      console.log(data)
       dispatch(getStockSuccess({ data: data.data, path }))
     } catch (error) {
       toastErrorNotify(`${path} çekme başarısız oldu.`)
